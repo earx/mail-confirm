@@ -148,7 +148,13 @@ class MailConfirm {
           message: data,
           status
         })
-        if (status > 200) {
+        if (status >= 500) {
+          //finish the run if we got error
+          smtp.end(() => {
+            resolve(smtpMessages)
+          })
+        }
+        else if (status > 200 ) {
           smtp.emit('next')
         }
       })
